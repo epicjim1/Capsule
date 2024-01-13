@@ -1,4 +1,12 @@
 import 'package:flutter/material.dart';
+import 'dart:developer' as developer;
+import 'dart:typed_data';
+import 'package:image_picker/image_picker.dart';
+import 'utils/utils.dart';
+
+
+
+
 
 void main() {
   runApp(const MyApp());
@@ -81,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // TRY THIS: Try changing the color here to a specific color (to
         // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
         // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
@@ -103,16 +111,19 @@ class _MyHomePageState extends State<MyHomePage> {
           // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
           // action in the IDE, or press "p" in the console), to see the
           // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
+
+      mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+              IconButton(
+                icon: const Icon(Icons.photo),
+                onPressed: () => developer.log('This will be logged to the console in the browser.'),
+                iconSize: 300,
+              ),
+              const Text(
+                'Post Image',
+                style: TextStyle(fontSize: 36.0),
+              ),
+            ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -123,3 +134,54 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+
+_imageSelect(BuildContext context) async {
+  return showDialog(
+      context: context,
+      builder: (context) {
+        return SimpleDialog(
+          title: Text('Select Image'),
+          children: [
+
+            SimpleDialogOption(
+              padding: EdgeInsets.all(20),
+              child: Text('Take a Photo'),
+              onPressed: () async {
+                Navigator.of(context).pop();
+                Uint8List file = await pickImage(
+                  ImageSource.camera,
+                );
+                setState(() {
+                  _file = file;
+                });
+              },
+            ),
+
+
+            SimpleDialogOption(
+              padding: EdgeInsets.all(20),
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+
+
+
+          ],
+        );
+      });
+
+}
+
+
+pickImage(ImageSource source) async {
+  final ImagePicker imagePicker = ImagePicker();
+  XFile? file = await imagePicker.pickImage(source: source);
+  if (file != null) {
+    return await file.readAsBytes();
+  }
+  print("No Image Selected");
+}
+
