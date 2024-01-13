@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'dart:developer' as developer;
 import 'dart:typed_data';
 import 'package:image_picker/image_picker.dart';
-import 'utils/utils.dart';
 
 
 
@@ -64,6 +63,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  Uint8List? _file;
 
   void _incrementCounter() {
     setState(() {
@@ -74,6 +74,47 @@ class _MyHomePageState extends State<MyHomePage> {
       // called again, and so nothing would appear to happen.
       _counter++;
     });
+
+     void _imageSelect(BuildContext context) async {
+      return showDialog(
+          context: context,
+          builder: (context) {
+            return SimpleDialog(
+              title: Text('Select Image'),
+              children: [
+
+                SimpleDialogOption(
+                  padding: EdgeInsets.all(20),
+                  child: Text('Take a Photo'),
+                  onPressed: () async {
+
+                    Navigator.of(context).pop();
+                    Uint8List file = await pickImage(
+                      ImageSource.camera,
+                    );
+                    setState(() {
+                      _file = file;
+                    });
+                  },
+                ),
+
+
+                SimpleDialogOption(
+                  padding: EdgeInsets.all(20),
+                  child: Text('Cancel'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+
+
+
+              ],
+            );
+          });
+
+    }
+
   }
 
   @override
@@ -116,7 +157,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
               IconButton(
                 icon: const Icon(Icons.photo),
-                onPressed: () => developer.log('This will be logged to the console in the browser.'),
+                onPressed: () => _imageSelect(context),
                 iconSize: 300,
               ),
               const Text(
@@ -133,47 +174,12 @@ class _MyHomePageState extends State<MyHomePage> {
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+
+  _imageSelect(BuildContext context) {}
 }
 
 
-_imageSelect(BuildContext context) async {
-  return showDialog(
-      context: context,
-      builder: (context) {
-        return SimpleDialog(
-          title: Text('Select Image'),
-          children: [
 
-            SimpleDialogOption(
-              padding: EdgeInsets.all(20),
-              child: Text('Take a Photo'),
-              onPressed: () async {
-                Navigator.of(context).pop();
-                Uint8List file = await pickImage(
-                  ImageSource.camera,
-                );
-                setState(() {
-                  _file = file;
-                });
-              },
-            ),
-
-
-            SimpleDialogOption(
-              padding: EdgeInsets.all(20),
-              child: Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-
-
-
-          ],
-        );
-      });
-
-}
 
 
 pickImage(ImageSource source) async {
