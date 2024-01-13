@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "135683103222",
+    "project_id": "capsuleauth",
+    "storage_bucket": "capsuleauth.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:135683103222:android:1b62d1fa84e767dc7ecfd7",
+        "android_client_info": {
+          "package_name": "com.example.capsule"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvehW_XqtLwv4Z7u0aSSdBf5frTz_pXCs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
